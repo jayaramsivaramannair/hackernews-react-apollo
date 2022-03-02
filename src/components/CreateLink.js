@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 //Import useMutation hook from @apollo/client
 import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
 //use gql library to parse the graphQL string and save it in a variable so it can be consumed by useMutation hook
 const CREATE_LINK_MUTATION = gql`
@@ -18,6 +19,8 @@ const CREATE_LINK_MUTATION = gql`
 `
 
 const  CreateLink = () => {
+  const navigate = useNavigate();
+  
   const [formState, setFormState] = useState({
     description: '',
     url: ''
@@ -27,8 +30,9 @@ const  CreateLink = () => {
     variables: {
       description: formState.description,
       url: formState.url
-    }
-  })
+    },
+    onCompleted: () => navigate('/')
+  });
 
   return (
     <div>
