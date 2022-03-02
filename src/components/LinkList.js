@@ -1,7 +1,10 @@
 import React from 'react'
 import Link from './Link';
+
+//Imports useQuery hook from @apollo/client package
 import { useQuery, gql } from '@apollo/client';
 
+//A query is sent to the server using gql query string and then the resultant data is stored in FEED_QUERY
 const FEED_QUERY = gql`
   {
     feed {
@@ -17,25 +20,19 @@ const FEED_QUERY = gql`
 `
 
 const LinkList = () => {
-  const linksToRender = [
-    {
-      id: 'link-id-1',
-      description:
-        'Prisma gives you a powerful database toolkit 😎',
-      url: 'https://prisma.io'
-    },
-    {
-      id: 'link-id-2',
-      description: 'The best GraphQL client',
-      url: 'https://www.apollographql.com/docs/react/'
-    }
-  ]
+  //The data returned from the graphQL server is extracted so that it can be used to display links
+  const {data} = useQuery(FEED_QUERY)
+
   return (
     <div>
       {
-        linksToRender.map((link) => {
-          return <Link key={link.id} link={link} />
-        })
+        data && (
+          <>
+            {data.feed.links.map((link) => {
+              return <Link key={link.id} link={link}/>
+            })}
+          </>
+        )
       }
     </div>
   )
