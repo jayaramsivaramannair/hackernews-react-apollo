@@ -14,10 +14,20 @@ const FEED_QUERY = gql`
         createdAt
         url
         description
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
       }
     }
   }
-`
+`;
 
 const LinkList = () => {
   //The data returned from the graphQL server is extracted so that it can be used to display links
@@ -28,8 +38,8 @@ const LinkList = () => {
       {
         data && (
           <>
-            {data.feed.links.map((link) => {
-              return <Link key={link.id} link={link}/>
+            {data.feed.links.map((link, index) => {
+              return <Link key={link.id} link={link} index={index}/>
             })}
           </>
         )

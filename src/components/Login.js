@@ -49,6 +49,7 @@ const Login = () => {
       password: formState.password
     },
     onCompleted: ({ login }) => {
+      //Sets the user token on local storage once the user successfully logs in
       localStorage.setItem(AUTH_TOKEN, login.token)
       navigate('/');
     }
@@ -61,6 +62,7 @@ const Login = () => {
       password: formState.password
     },
     onCompleted: ({signup}) => {
+      //Sets the user token on local storage once the user successfully signs up
       localStorage.setItem(AUTH_TOKEN, signup.token);
       navigate('/')
     }

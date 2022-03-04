@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
+import {setContext} from '@apollo/client/link/context';
 import './styles/index.css';
 import App from './components/App';
 
@@ -12,6 +13,7 @@ import {
   createHttpLink,
   InMemoryCache
 } from '@apollo/client';
+import { AUTH_TOKEN } from './constants';
 
 
 //2. Expose the server link where the GraphQL server will be running
@@ -20,9 +22,21 @@ const httpLink = createHttpLink({
 })
 
 
+//Setting token obtained from local storage to authorize user requests by using the token
+const authLink = setContext((_, {headers}) => {
+  const token = localStorage.getItem(AUTH_TOKEN)
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ''
+    }
+  }
+})
+
+
 //3. Create an instance of an ApolloClient
 const client = new ApolloClient({
-  link: httpLink,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 })
 
