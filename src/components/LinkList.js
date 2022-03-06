@@ -5,7 +5,7 @@ import Link from './Link';
 import { useQuery, gql } from '@apollo/client';
 
 //A query is sent to the server using gql query string and then the resultant data is stored in FEED_QUERY
-const FEED_QUERY = gql`
+export const FEED_QUERY = gql`
   {
     feed {
       id
