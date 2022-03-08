@@ -25,6 +25,34 @@ const NEW_LINKS_SUBSCRIPTION = gql`
   }
 `;
 
+
+const NEW_VOTES_SUBSCRIPTION = gql`
+  subscription {
+    newVote {
+      id
+      link {
+        id
+        url
+        description
+        createdAt
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      user {
+        id
+      }
+    }
+  }
+`;
+
 //A query is sent to the server using gql query string and then the resultant data is stored in FEED_QUERY
 export const FEED_QUERY = gql`
   {
@@ -59,6 +87,10 @@ const LinkList = () => {
     subscribeToMore
   } = 
   useQuery(FEED_QUERY)
+
+  subscribeToMore({
+    document: NEW_VOTES_SUBSCRIPTION
+  });
 
   subscribeToMore({
     document: NEW_LINKS_SUBSCRIPTION,
